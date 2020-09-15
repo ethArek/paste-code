@@ -1,5 +1,5 @@
 import { SnippetRepository } from "./snippet-repository";
-import { Snippet } from "../../types/snippet";
+import { Snippet } from "../../types";
 
 export class SnippetService {
   constructor(

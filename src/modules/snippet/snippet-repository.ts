@@ -1,4 +1,4 @@
-import { Snippet } from "src/types/snippet";
+import { Snippet } from "src/types";
 import { DbService } from "../database/db-service";
 
 export class SnippetRepository {
@@ -20,9 +20,15 @@ export class SnippetRepository {
 
   async get(id: string) {
     return this.dbService.connection
-      .select('*')
-      .from('snippets')
-      .where('id', id)
+      .select([
+        's.id',
+        'l.name as language',
+        's.code',
+        's.created_at'
+      ])
+      .from('snippets as s')
+      .leftJoin('languages as l', 's.language', 'l.id')
+      .where('s.id', id)
       .then(this.dbService.getFirstRow);
   }
 
