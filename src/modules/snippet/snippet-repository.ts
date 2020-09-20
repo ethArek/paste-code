@@ -12,7 +12,9 @@ export class SnippetRepository {
       .insert(
         keysToSnake(data)
       )
-      .returning('*');
+      .returning('*')
+      .then(this.dbService.getFirstRow)
+      .then(this.dbService.mapSingleResponse);
   }
 
   async update(id: string, data: Snippet) {
@@ -20,7 +22,10 @@ export class SnippetRepository {
       .update(
         keysToSnake(data)
       )
-      .where('id', id);
+      .where('id', id)
+      .returning('*')
+      .then(this.dbService.getFirstRow)
+      .then(this.dbService.mapSingleResponse);
   }
 
   async get(id: string) {

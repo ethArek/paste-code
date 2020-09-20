@@ -1,5 +1,6 @@
 import knex from 'knex';
 import { dbConfig } from '../../config';
+import { keysToCamel } from 'src/lib/cases-handler';
 
 export class DbService {
   private conn: knex<any, unknown[]>;
@@ -12,12 +13,16 @@ export class DbService {
     });
   }
 
-  getFirstRow (data: Array<any>) {
+  public getFirstRow (data: Array<any>) {
     if (data.length) {
       return data[0];
     }
     
     throw new Error('TODO: 404')
+  }
+
+  public mapSingleResponse (data: Object) {
+    return keysToCamel(data);
   }
 
   get connection () {
