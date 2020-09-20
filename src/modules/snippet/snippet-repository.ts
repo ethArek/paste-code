@@ -1,5 +1,6 @@
 import { Snippet } from "src/types";
 import { DbService } from "../database/db-service";
+import { keysToSnake } from "src/lib/cases-handler";
 
 export class SnippetRepository {
   constructor(
@@ -8,13 +9,17 @@ export class SnippetRepository {
 
   async create(data: Omit<Snippet, "id">) {
     return this.dbService.connection('snippets')
-      .insert(data)
+      .insert(
+        keysToSnake(data)
+      )
       .returning('*');
   }
 
   async update(id: string, data: Snippet) {
     return this.dbService.connection('snippets')
-      .update(data)
+      .update(
+        keysToSnake(data)
+      )
       .where('id', id);
   }
 

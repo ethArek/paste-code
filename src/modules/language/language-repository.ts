@@ -1,5 +1,6 @@
 import { Language } from "src/types/language";
 import { DbService } from "../database/db-service";
+import { keysToSnake } from "src/lib/cases-handler";
 
 export class LanguageRepository {
   constructor(
@@ -8,13 +9,17 @@ export class LanguageRepository {
 
   async create(data: Omit<Language, "id">) {
     return this.dbService.connection('languages')
-      .insert(data)
+      .insert(
+        keysToSnake(data)
+      )
       .returning('*');
   }
 
   async update(id: string, data: Language) {
     return this.dbService.connection('languages')
-      .update(data)
+      .update(
+        keysToSnake(data)
+      )
       .where('id', id);
   }
 

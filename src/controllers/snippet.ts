@@ -24,9 +24,9 @@ export async function getSnippetById(req: express.Request, res: express.Response
 export async function createSnippet(req: express.Request, res: express.Response, next: express.NextFunction, deps: AppDependencies) {
   try {
     res.json({
-    data: await deps.snippetService.create(req.body)
+      data: await deps.snippetService.create(req.body)
     });
   } catch (err) {
-      next(err);
+    next(err);
   }
 }
