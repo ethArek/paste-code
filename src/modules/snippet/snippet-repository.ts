@@ -39,7 +39,8 @@ export class SnippetRepository {
       .from('snippets as s')
       .leftJoin('languages as l', 's.language', 'l.id')
       .where('s.id', id)
-      .then(this.dbService.getFirstRow);
+      .then(this.dbService.getFirstRow)
+      .then(this.dbService.mapSingleResponse);
   }
 
   async getList(query: any) {

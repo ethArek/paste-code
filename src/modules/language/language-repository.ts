@@ -33,7 +33,8 @@ export class LanguageRepository {
       .select('*')
       .from('languages')
       .where('id', id)
-      .then(this.dbService.getFirstRow);
+      .then(this.dbService.getFirstRow)
+      .then(this.dbService.mapSingleResponse);
   }
 
   async getList(query: any) {

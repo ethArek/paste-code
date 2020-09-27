@@ -1,20 +1,21 @@
 import express from 'express';
+import exphbs from 'express-handlebars';
 import { initAppDependencies } from './app-dependencies';
-import { getSnippetsList, getSnippetById } from './controllers/snippet';
+import { getApiRouter } from './controllers';
 import errorHandlingMiddleware from './lib/error-handling-middleware';
-import { createLanguage } from './controllers/language';
 
 const app = express();
 const PORT = 3000;
 const deps = initAppDependencies();
 
-app.use(express.json());
+app
+  .use(express.json())
+  .engine('hbs', exphbs({
+    extname: "hbs"
+  }))
+  .set('view engine', 'hbs')
 
-app.get('/snippets', (req, res, next) => getSnippetsList(req, res, next, deps));
-app.get('/snippets/:id', (req, res, next) => getSnippetById(req, res, next, deps));
-
-app.post('/languages', (req, res, next) => createLanguage(req, res, next, deps));
-
-app.use(errorHandlingMiddleware);
-
-app.listen(PORT, () => console.log(`App listening on PORT ${PORT}!`));
+app
+  .use('/api', getApiRouter(deps))
+  .use(errorHandlingMiddleware)
+  .listen(PORT, () => console.log(`App listening on PORT ${PORT}!`));
